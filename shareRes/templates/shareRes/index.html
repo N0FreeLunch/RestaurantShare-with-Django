@@ -204,7 +204,7 @@
         </div>
         <div class="content">
             <div class="row">
-                <form action="" method="POST" onsubmit="return emailCheckForm();"> {% csrf_token %}
+                <form action="./sendEmail/send/" method="POST" onsubmit="return emailCheckForm();"> {% csrf_token %}
                     <div class="restaurantInfoDiv ">
                         <div class="row">
                             <div class="infoHeaderDiv">
@@ -221,19 +221,19 @@
                           <li class="category deactive">{{category.category_name}}</li>
                           <ul class="restaurantList">
 
+                              {% for restaurant in restaurants%}
+                              {% if category.id == restaurant.category_id %}
                               <div class="input-group">
                                   <span class="input-group-addon">
-                                      <input name="check1" id="check1" type="checkbox">
+                                      <input name="checks" id="check{{restaurant.id}}" type="checkbox" value="{{restaurant.id}}">
                                   </span>
-                                  <a href="restaurantDetail/1"><input name="res1" id="res1" type="text" class="form-control" disabled style="cursor: pointer;" value="1"></a>
+                                  <a href="restaurantDetail/{{restaurant.id}}">
+                                    <input name="res1" id="res1" type="text" class="form-control" disabled style="cursor: pointer;" value="{{restaurant.restaurant_name}}">
+                                  </a>
                               </div>
+                              {% endif %}
+                              {% endfor %}
 
-                              <div class="input-group">
-                                  <span class="input-group-addon">
-                                      <input name="check2" id="check2" type="checkbox">
-                                  </span>
-                                  <a href="restaurantDetail/2"><input name="res2" id="res2" type="text" class="form-control" disabled style="cursor: pointer;" value="2"></a>
-                              </div>
 
                           </ul>
                           {% endfor %}
@@ -299,7 +299,14 @@
                             <h1>Email <small class="subTitle">수신자와 제목,인사말을 적어주세요.</small></h1>
                         </div>
                         <div class="emailContentGroup">
-
+                            <div class="emailContentHeader">
+                                <h4>발신자 아이디 <span class="inputReceiverSub">콤마(,)로 구분해서 여러명에게 보낼 수 있습니다.</span></h4>
+                                <input class="inputReceiver" name="senderMail" id="inputReceiver" type="text"/><br/>
+                            </div>
+                            <div class="emailContentHeader">
+                                <h4>발신자 비밀번호 <span class="inputReceiverSub"></span></h4>
+                                <input class="inputReceiver" name="senderPass" id="inputReceiver" type="password"/><br/>
+                            </div>
                             <div class="emailContentHeader">
                                 <h4>수신자 <span class="inputReceiverSub">콤마(,)로 구분해서 여러명에게 보낼 수 있습니다.</span></h4>
                                 <input class="inputReceiver" name="inputReceiver" id="inputReceiver" type="text" placeholder="수신자를 적어주세요."/><br/>
